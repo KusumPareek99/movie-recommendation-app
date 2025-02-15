@@ -10,7 +10,7 @@ with open("movies_dict.pkl", "rb") as f:
 movies = pd.DataFrame(movies_dict)
 
 # Create and fit CountVectorizer
-cv = CountVectorizer(max_features=5000, stop_words="english")
+cv = CountVectorizer(max_features=3000, stop_words="english")
 vectors = cv.fit_transform(movies["tags"]).toarray()
 
 # Compute similarity matrix
