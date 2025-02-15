@@ -87,6 +87,12 @@ def get_recommendations(movie_title):
         return []
 
 
+@app.route("/")
+def home():
+    """Home endpoint"""
+    return "Welcome to the Movie Recommendation API!"
+
+
 @app.route("/health")
 def health_check():
     """Health check endpoint"""
