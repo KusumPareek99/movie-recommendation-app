@@ -1,7 +1,8 @@
 import { updateSearchCount, getTrendingMovies } from "../appwrite";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
-const RECOMMENDATION_API_URL = "http://127.0.0.1:8080/api";
+const RECOMMENDATION_API_URL =
+  "https://movie-recommendation-app-backend.onrender.com/api";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 const API_OPTIONS = {
