@@ -8,6 +8,7 @@ import os
 from dotenv import load_dotenv
 import requests
 from google.cloud import storage
+from google.oauth2 import service_account
 
 # Load environment variables
 load_dotenv()
@@ -19,10 +20,27 @@ CORS(app)
 # Load API key
 API_KEY = os.getenv("VITE_TMDB_API_KEY")
 
+# Access Google Cloud credentials from environment variables
+project_id = os.getenv("GOOGLE_PROJECT_ID")
+private_key = os.getenv("GOOGLE_PRIVATE_KEY")
+client_email = os.getenv("GOOGLE_CLIENT_EMAIL")
+token_uri = os.getenv("GOOGLE_TOKEN_URI")
+
+credentials = service_account.Credentials.from_service_account_info(
+    {
+        "type": "service_account",
+        "project_id": project_id,
+        "private_key": private_key,
+        "client_email": client_email,
+        "token_uri": token_uri,
+    },
+    scopes=["https://www.googleapis.com/auth/cloud-platform"],
+)
+
 
 def load_movies_from_gcs(bucket_name, file_name):
     # Initialize the Google Cloud Storage client
-    storage_client = storage.Client()
+    storage_client = storage.Client(credentials=credentials, project=project_id)
 
     # Get the GCS bucket
     bucket = storage_client.get_bucket(bucket_name)
