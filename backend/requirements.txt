@@ -1,10 +1,10 @@
 flask
 flask-cors
-flask-limiter
-flask-caching
 pandas
 requests
 python-dotenv
 scikit-learn
 numpy
+google-cloud-storage
+google-auth
 gunicorn
