@@ -1,0 +1,9 @@
+flask
+flask-cors
+flask-limiter
+flask-caching
+pandas
+requests
+scikit-learn
+python-dotenv
+gunicorn
