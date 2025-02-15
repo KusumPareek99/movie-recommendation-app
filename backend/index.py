@@ -7,6 +7,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import os
 from dotenv import load_dotenv
 import requests
+from google.cloud import storage
 
 # Load environment variables
 load_dotenv()
@@ -18,10 +19,30 @@ CORS(app)
 # Load API key
 API_KEY = os.getenv("VITE_TMDB_API_KEY")
 
+
+def load_movies_from_gcs(bucket_name, file_name):
+    # Initialize the Google Cloud Storage client
+    storage_client = storage.Client()
+
+    # Get the GCS bucket
+    bucket = storage_client.get_bucket(bucket_name)
+
+    # Get the blob (file) from the bucket
+    blob = bucket.blob(file_name)
+
+    # Download the file contents into memory
+    pickle_data = blob.download_as_bytes()
+
+    # Load the pickle data
+    movies_dict = pickle.loads(pickle_data)
+
+    return pd.DataFrame(movies_dict)
+
+
 # Load movie data
-with open("movies_dict.pkl", "rb") as f:
-    movies_dict = pickle.load(f)
-movies = pd.DataFrame(movies_dict)
+bucket_name = "movie-app-bucket"
+file_name = "movies_dict.pkl"
+movies = load_movies_from_gcs(bucket_name, file_name)
 
 # Initialize CountVectorizer
 cv = CountVectorizer(max_features=3000, stop_words="english")
